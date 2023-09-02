@@ -1,0 +1,72 @@
+.App {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.toolbar {
+  margin: 2px;
+  background-color: rgb(240, 240, 255);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+}
+.toolbar a {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+  padding: 2px 5px;
+  margin: 5px 5px;
+  background-color: rgba(255, 255, 224, 0.76);
+  border-radius: 5px;
+}
+
+.form-control > label {
+  display: inline-block;
+  width: 150px;
+}
+
+.form-control > select {
+  width: auto;
+}
+
+.login-page,
+.register-page {
+  margin-inline: auto;
+  border: 1px solid lightgray;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  align-items: center;
+}
+
+.animals {
+  display: flex;
+  gap: 10px;
+}
+
+.animal-card {
+  width: 200px;
+  padding: 10px;
+  height: 250px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 15px;
+  background-color: beige;
+  border-radius: 15px;
+}
+.animal-card .image-wrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 15px;
+}
+.animal-card .image-wrapper img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 15px;
+}/*# sourceMappingURL=App.css.map */
