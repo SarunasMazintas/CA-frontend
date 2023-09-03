@@ -1,24 +1,28 @@
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { MyBackendContext } from '../../App'
+import { useContext } from 'react';
 
-export const LoginPage = () => {
+export const LoginPage = ({setLoggedUser}) => {
+    const backendUrl = useContext(MyBackendContext);
 
     const usernameRef = useRef();
     const passwordRef = useRef();
     const buttonRef = useRef();
 
     const [message, setMessage] = useState();
-    const [user, setUser] = useState();
+    //const [user, setUser] = useState();
     const nav = useNavigate();
 
-    function login(seconds) {
+    function login(user, seconds) {
+        setLoggedUser(user);
         const timer = setTimeout(() => {
             nav('/animals');
             console.log('Automatically redirected to main page after succesfull login');
             buttonRef.current.disabled = false;
         }, seconds * 1000);
         return () => clearTimeout(timer);
-        
+
     }
 
     function loginRequest() {
@@ -35,14 +39,14 @@ export const LoginPage = () => {
             body: JSON.stringify(user)
         }
 
-        fetch('http://localhost:8001/login', options)
+        fetch(backendUrl + '/login', options)
             .then(res => res.json())
             .then(data => {
                 setMessage(data.message);
                 console.log(data)
                 if (data.user) {
                     console.log(data.user._id)
-                    login(2)
+                    login(data.user, 2)
                     buttonRef.current.disabled = true;
                 }
             })

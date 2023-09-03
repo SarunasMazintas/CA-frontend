@@ -1,7 +1,10 @@
 import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { MyBackendContext } from '../../App'
 
 export const RegisterPage = () => {
+    const backendUrl = useContext(MyBackendContext);
     const [errorMsg, setErrorMsg] = useState();
     const nav = useNavigate();
 
@@ -37,11 +40,11 @@ export const RegisterPage = () => {
             body: JSON.stringify(user)
         }
 
-        fetch('http://localhost:8001/register', options)
+        fetch(backendUrl + '/register', options)
             .then(res => res.json())
             .then(data => {
                 setErrorMsg(data.message);
-                if (data.user){
+                if (data.user) {
                     redirectToLogin(3)
                 }
             })

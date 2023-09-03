@@ -1,0 +1,12 @@
+Padaryti, kad prisijungus prie sistemos į localStorage arba cookies įsirašytų prisijungusio userio ID, ir tada beliktų jį parsifetchint.
+    login lange būtų galima pasisveikinti ir paklausti, ar jis nori prisijungti
+
+Jei prisijungimas užfiksuotas seniau nei prieš 10 minučių, veikti taip, kaip iki šiol;
+
+
+
+Jei gyvūnas yra removinamas iš sąrašo, bet lieka favorituose, jo kortelę rodyti kaip nebegaliojančią ir leisti išsiimti iš favoritų
+
+Padaryti filtrus;
+Padaryti gyvūno kortelę ir komentarus joje, gal pavyktų pagal userį padaryt;
+Logout mygtukas

@@ -45,6 +45,7 @@
 .animals {
   display: flex;
   gap: 10px;
+  justify-content: center;
 }
 
 .animal-card {
@@ -52,7 +53,7 @@
   padding: 10px;
   height: 250px;
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 4fr 2fr 1fr;
   gap: 15px;
   background-color: beige;
   border-radius: 15px;
@@ -69,4 +70,12 @@
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 15px;
+}
+
+button {
+  border-radius: 10px;
+  border: 0;
+}
+button:hover {
+  font-weight: 700;
 }/*# sourceMappingURL=App.css.map */
