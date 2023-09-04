@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import './App.css';
 import { LoginPage } from './pages/login/LoginPage';
 import { RegisterPage } from './pages/login/RegisterPage';
@@ -6,6 +6,8 @@ import { Toolbar } from './components/Toolbar';
 import { Animals } from './pages/AnimalPages/Animals';
 import { CreateAnimal } from './pages/AnimalPages/CreateAnimal';
 import { createContext, useEffect, useState } from 'react';
+import { Favorites } from './pages/AnimalPages/Favorites';
+import { Animal } from './pages/AnimalPages/Animal';
 export const MyBackendContext = createContext()
 
 function App() {
@@ -15,6 +17,7 @@ function App() {
   const backendUrl = 'http://localhost:8001';
   //const [loggedUser, setLoggedUser] = useState({ _id: '64f21532ad9c24462c52f9af', username: '5', password: '$2b$10$enBX4lUmBffjjT7RpQcLk.XhIMmtlgQzppnodsoI8.m4w20AuhMhi', image: 'https://cdn-icons-png.flaticon.com/512/6386/6386976.png', __v: 1, favorites: ['ututu'] });
   const [loggedUser, setLoggedUser] = useState();
+  const [animals, setAnimals] = useState([]);
 
   useEffect(() => {
     console.log(loggedUser)
@@ -85,6 +88,18 @@ function App() {
       })
   }
 
+  async function getAnimalsList(){
+    const request = await fetch(backendUrl + '/getAnimalsList');
+    const data = await request.json();
+
+    if (data.animals){
+      setAnimals(data.animals)
+    }
+    //.then(data => data.json())
+    //.then(data => setAnimals(data.animals))
+  }
+
+
   return (
 
     <div className="App">
@@ -94,8 +109,11 @@ function App() {
           <Routes>
             <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} />}></Route>
             <Route path='/register' element={<RegisterPage />}></Route>
-            <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} />}></Route>
+            <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals}/>}></Route>
             <Route path='/create-animal' element={<CreateAnimal />}></Route>
+            <Route path='/Favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
+            
+            <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
 
           </Routes>
         </BrowserRouter>

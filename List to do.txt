@@ -10,3 +10,7 @@ Jei gyvūnas yra removinamas iš sąrašo, bet lieka favorituose, jo kortelę ro
 Padaryti filtrus;
 Padaryti gyvūno kortelę ir komentarus joje, gal pavyktų pagal userį padaryt;
 Logout mygtukas
+
+
+Animals Galery
+//PATCH user pakeisti, kad į objektą nedėčiau ID, jį paduoti per params'us

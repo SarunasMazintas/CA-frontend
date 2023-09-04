@@ -24,7 +24,14 @@
 }
 
 
+.form-control{
+    display: flex;
+    align-items: center;
 
+    span {
+        padding-inline: 10px;
+    }
+}
 
 .form-control>label {
     display: inline-block;
@@ -87,3 +94,41 @@ button {
         font-weight: 700;
     }
 }
+
+.animal{
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 3fr;
+    gap: 10px;
+
+    .image-wrapper{
+        grid-row-start: span 2;
+
+        img{
+            width: 100%;
+        }
+    }
+}
+
+.animals-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-toolbar{
+    display: flex;
+    justify-content: space-around;
+    width: 80%
+
+}
+
+.multi-range-slider.multi-range-slider{
+    position: relative;
+    display: block;
+    border: none;
+    box-shadow: none;
+    width: 150px;
+  }

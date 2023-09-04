@@ -1,25 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import { useContext } from 'react';
-import { MyBackendContext } from '../../App'
-import { AnimalCard } from '../../components/animalComponents/AnimalCard';
+import React, { useEffect, useReducer } from 'react'
 
-export const Animals = ({toggleFavorite, loggedUser}) => {
-  const backendUrl = useContext(MyBackendContext);
-  const [animals, setAnimals] = useState([]);
-  
-  function getAnimalsList(){
-    fetch(backendUrl + '/getAnimalsList')
-    .then(data => data.json())
-    .then(data => setAnimals(data.animals))
+import { AnimalCard } from '../../components/animalComponents/AnimalCard';
+import { useNavigate } from 'react-router-dom';
+import { FilterToolbar } from '../../components/FilterToolbar';
+
+export const Animals = ({ toggleFavorite, loggedUser, getAnimalsList, animals }) => {
+
+  const nav = useNavigate();
+
+  const initialFilters = {
+    type: '',
+    minAge: 0,
+    maxAge: Number.MAX_VALUE
   }
 
+  const [filters, setFilters] = useReducer((currentValue, patchInfo) => {
+    console.log('shit happened in reducer')
+    let newValue = { ...currentValue };
+    Object.keys(patchInfo).forEach(key => {
+      console.log(`Filter ${key} changed from '${currentValue[key]}' to '${patchInfo[key]}'` );
+      newValue[key] = patchInfo[key]
+    })
+    return newValue;
+  }, initialFilters);
+
   useEffect(() => {
+    console.log('shit happened in useEffect 1')
+    console.log('Animals updated');
     getAnimalsList();
+  }, [])
+
+  useEffect(() => {
+    if (!loggedUser) {
+      console.log('shit happened in useEffect 2')
+      nav('/');
+    }
   }, []);
 
   return (
-    <div className='animals'>
-      {animals && animals.map(animal => <AnimalCard animal={animal} key={animal._id} toggleFavorite={toggleFavorite} loggedUser={loggedUser}/>)}
+    <div className='animals-page'>
+      <FilterToolbar animals={animals} setFilters={setFilters}/>
+
+      <div className='animals'>
+        {animals && animals
+        .filter(animal => animal.age >= filters.minAge)
+        .filter(animal => animal.age <= filters.maxAge)
+        .filter(animal => animal.type = filters.type)
+        .map(animal => <AnimalCard animal={animal} key={animal._id} toggleFavorite={toggleFavorite} loggedUser={loggedUser} />)}
+      </div>
     </div>
   )
 }
