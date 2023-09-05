@@ -1,6 +1,11 @@
 .App {
     max-width: 1200px;
     margin-inline: auto;
+    
+}
+
+.content{
+    padding: 10px;
 }
 
 .toolbar {
@@ -56,8 +61,9 @@
 
 .animals{
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
-    justify-content: center;
+    margin-inline: auto;
 }
 
 .animal-card {
@@ -115,6 +121,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -125,10 +132,21 @@ button {
 
 }
 
-.multi-range-slider.multi-range-slider{
-    position: relative;
-    display: block;
-    border: none;
-    box-shadow: none;
-    width: 150px;
-  }
+.messages-component {
+    height: 100%;
+    background-color:bisque;
+    display: grid;
+    grid-template-rows: 1fr 20px;
+
+    .start-chat-message {
+        align-self: center;
+        font-size: xx-large;
+    }
+
+
+    .controls {
+        display: grid;
+        grid-template-columns: 4fr 1fr;
+
+    }
+}

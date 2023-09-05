@@ -3,6 +3,10 @@
   margin-inline: auto;
 }
 
+.content {
+  padding: 10px;
+}
+
 .toolbar {
   margin: 2px;
   background-color: rgb(240, 240, 255);
@@ -52,8 +56,9 @@
 
 .animals {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  justify-content: center;
+  margin-inline: auto;
 }
 
 .animal-card {
@@ -106,6 +111,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -115,10 +121,17 @@ button:hover {
   width: 80%;
 }
 
-.multi-range-slider.multi-range-slider {
-  position: relative;
-  display: block;
-  border: none;
-  box-shadow: none;
-  width: 150px;
+.messages-component {
+  height: 100%;
+  background-color: bisque;
+  display: grid;
+  grid-template-rows: 1fr 20px;
+}
+.messages-component .start-chat-message {
+  align-self: center;
+  font-size: xx-large;
+}
+.messages-component .controls {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
 }/*# sourceMappingURL=App.css.map */

@@ -24,6 +24,10 @@ export const FilterToolbar = ({ animals, setFilters}) => {
         setMinValue2(0);
     }
 
+    function filterTypeChanged(e){
+        setFilters({type: e.target.value});
+    }
+
     useEffect(() => {
         console.log('miau')
         setFilters({
@@ -37,7 +41,7 @@ export const FilterToolbar = ({ animals, setFilters}) => {
         <div className='filter-toolbar'>
             <div className="form-control">
                 <label htmlFor="type"> Show Only: </label>
-                <select name="type" id="type" ref={typeRef}>
+                <select name="type" id="type" ref={typeRef} onChange={filterTypeChanged}>
                     <option value="">Show All</option>
                     <option value="cat">Cat</option>
                     <option value="dog">Dog</option>
@@ -47,6 +51,7 @@ export const FilterToolbar = ({ animals, setFilters}) => {
                 <label htmlFor="age"> Age: </label>
             <span>{minValue}</span>
                 <MultiRangeSlider
+                style={{border: 'none', boxShadow: 'none', width: '150px'}}
                 ruler = {false}
                 label = {false}
                     minValue={minValue}

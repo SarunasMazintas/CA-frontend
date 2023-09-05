@@ -37,6 +37,15 @@ export const Animals = ({ toggleFavorite, loggedUser, getAnimalsList, animals })
     }
   }, []);
 
+  useEffect(() => {
+    console.log('Filters changed, ', filters);
+    console.log(animals && animals
+        .filter(animal => animal.age >= filters.minAge)
+        .filter(animal => animal.age <= filters.maxAge)
+        .filter(animal => animal.type === filters.type)
+        )
+  }, [filters]);
+
   return (
     <div className='animals-page'>
       <FilterToolbar animals={animals} setFilters={setFilters}/>
@@ -45,7 +54,7 @@ export const Animals = ({ toggleFavorite, loggedUser, getAnimalsList, animals })
         {animals && animals
         .filter(animal => animal.age >= filters.minAge)
         .filter(animal => animal.age <= filters.maxAge)
-        .filter(animal => animal.type = filters.type)
+        .filter(animal => animal.type === filters.type || filters.type === '')
         .map(animal => <AnimalCard animal={animal} key={animal._id} toggleFavorite={toggleFavorite} loggedUser={loggedUser} />)}
       </div>
     </div>

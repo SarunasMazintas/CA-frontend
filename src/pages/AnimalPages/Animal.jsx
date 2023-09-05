@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Comments } from '../../components/animalComponents/Comments'
 import { useParams } from 'react-router-dom'
+import { useContext } from 'react';
+import { MyBackendContext } from '../../App'
 
 export const Animal = ({ animals, loggedUser, toggleFavorite }) => {
+    const backendUrl = useContext(MyBackendContext);
     const {id} = useParams();
 
     const [animal, setAnimal] = useState();
 
     const image = () => {
-        return animal.image !== '' ? animal.image : "http://localhost:8001/images/no-image.jpg";
+        return animal.image !== '' ? animal.image : backendUrl+"/images/no-image.jpg";
     }
 
     useEffect(() => {
@@ -30,7 +33,7 @@ export const Animal = ({ animals, loggedUser, toggleFavorite }) => {
                     <div className="age">Age: {animal.age}</div>
                 </div>
                 <div className="comments">
-                    <Comments />
+                    <Comments animal={animal}/>
                 </div>
             </div>
             }

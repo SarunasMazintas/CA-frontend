@@ -106,16 +106,18 @@ function App() {
       <MyBackendContext.Provider value={backendUrl}>
         <BrowserRouter>
           <Toolbar loggedUser={loggedUser} />
+          <div className="content">
           <Routes>
             <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} />}></Route>
             <Route path='/register' element={<RegisterPage />}></Route>
             <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals}/>}></Route>
             <Route path='/create-animal' element={<CreateAnimal />}></Route>
-            <Route path='/Favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
+            <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
             
             <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
 
           </Routes>
+          </div>
         </BrowserRouter>
       </MyBackendContext.Provider>
     </div>
