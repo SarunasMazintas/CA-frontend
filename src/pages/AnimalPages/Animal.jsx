@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Comments } from '../../components/animalComponents/Comments'
+import { CommentsWrapper } from '../../components/animalComponents/Comments/CommentsWrapper'
 import { useParams } from 'react-router-dom'
 import { useContext } from 'react';
 import { MyBackendContext } from '../../App'
@@ -33,7 +33,7 @@ export const Animal = ({ animals, loggedUser, toggleFavorite }) => {
                     <div className="age">Age: {animal.age}</div>
                 </div>
                 <div className="comments">
-                    <Comments animal={animal}/>
+                    <CommentsWrapper animal={animal} loggedUser={loggedUser}/>
                 </div>
             </div>
             }

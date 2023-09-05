@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MultiRangeSlider from "multi-range-slider-react";
 
-export const FilterToolbar = ({ animals, setFilters}) => {
+export const FilterToolbar = ({ animals, setFilters }) => {
 
     const getMaxValue = () => {
         const animalAges = animals.map(animal => Number(animal.age));
@@ -24,8 +24,8 @@ export const FilterToolbar = ({ animals, setFilters}) => {
         setMinValue2(0);
     }
 
-    function filterTypeChanged(e){
-        setFilters({type: e.target.value});
+    function filterTypeChanged(e) {
+        setFilters({ type: e.target.value });
     }
 
     useEffect(() => {
@@ -35,11 +35,11 @@ export const FilterToolbar = ({ animals, setFilters}) => {
             maxAge: maxValue2,
             type: typeRef.current.value
         })
-    }, [maxValue2, minValue2, typeRef.current])
+    }, [maxValue2, minValue2, typeRef.current], animals)
 
     return (
         <div className='filter-toolbar'>
-            <div className="form-control">
+            <div className="filter-control">
                 <label htmlFor="type"> Show Only: </label>
                 <select name="type" id="type" ref={typeRef} onChange={filterTypeChanged}>
                     <option value="">Show All</option>
@@ -47,13 +47,13 @@ export const FilterToolbar = ({ animals, setFilters}) => {
                     <option value="dog">Dog</option>
                 </select>
             </div>
-            <div className="form-control">
+            <div className="filter-control">
                 <label htmlFor="age"> Age: </label>
-            <span>{minValue}</span>
+                <span>{minValue}</span>
                 <MultiRangeSlider
-                style={{border: 'none', boxShadow: 'none', width: '150px'}}
-                ruler = {false}
-                label = {false}
+                    style={{ border: 'none', boxShadow: 'none', width: '150px' }}
+                    ruler={false}
+                    label={false}
                     minValue={minValue}
                     maxValue={maxValue}
                     maxValue2={maxValue2}
