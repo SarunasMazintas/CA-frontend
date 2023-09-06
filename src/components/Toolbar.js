@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useLocation } from "react-router-dom";
 
 
-export const Toolbar = ({ loggedUser }) => {
+export const Toolbar = ({ loggedUser, logOut}) => {
     const location = useLocation();
     return (
         <div>
@@ -14,7 +14,7 @@ export const Toolbar = ({ loggedUser }) => {
                         {!(location.pathname === '/create-animal') && <Link to='/create-animal'>Add animal</Link>}
                         {!(location.pathname === '/favorites') && <Link to='/favorites'>Favorites ({loggedUser?.favorites?.length})</Link>}
                     </div>
-                    {!(location.pathname === '/') && <Link to='/'>Log out!</Link>}
+                    {!(location.pathname === '/') && <Link to='/' onClick={logOut}>Log out!</Link>}
                 </div>
             }
         </div>

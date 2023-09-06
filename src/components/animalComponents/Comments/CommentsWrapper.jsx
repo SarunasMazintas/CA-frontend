@@ -7,7 +7,7 @@ export const CommentsWrapper = ({ animal, loggedUser }) => {
 
   const backendUrl = useContext(MyBackendContext);
   const messageRef = useRef();
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState();
 
   async function send() {
     if (messageRef.current?.value !== '') {
@@ -45,13 +45,20 @@ export const CommentsWrapper = ({ animal, loggedUser }) => {
     getCommentsFromDB()
   }, [])
 
+  useEffect(() => {
+    console.log('comments:' , comments);
+  }, [comments])
+
   function keyClicked(e) {
     if (e.key === 'Enter') send();
   }
 
   return (
     <div className='comments-wrapper'>
-      {!comments.length && <div className='no-comments'>
+      {!comments && <div className='no-comments'>
+        Loading...
+      </div>}
+      {comments && !comments.length && <div className='no-comments'>
         No comments yet.
         <div>
           Be the first!

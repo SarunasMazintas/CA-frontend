@@ -3,20 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MyBackendContext } from '../../App'
 import { useContext } from 'react';
 
-const localStorageExpirationMinutes = 1000*60*5;
-
-function getDateInHumanForm(timestamp) {
-    const date2 = new Date(Number(timestamp));
-    const year = date2.getFullYear()
-    const month = String(date2.getMonth()).length < 2 ? '0' + (date2.getMonth() + 1) : date2.getMonth();
-    const day = String(date2.getDate()).length < 2 ? '0' + date2.getDate() : date2.getDate();
-    const hour = String(date2.getHours())
-    const minutes = String(date2.getMinutes())
-    const seconds = String(date2.getSeconds())
-    return '' + year + '-' + month + '-' + day + ', ' + hour + ':' + minutes + ':' + seconds
-  }
-  
-export const LoginPage = ({ setLoggedUser }) => {
+export const LoginPage = ({ setLoggedUser, loginStorageUser, validateStorageUser }) => {
     const backendUrl = useContext(MyBackendContext);
 
     const usernameRef = useRef();
@@ -72,25 +59,11 @@ export const LoginPage = ({ setLoggedUser }) => {
         localStorage.setItem('loggedUser', JSON.stringify(loggedUserShort))
     }
 
-    function getStorageUser(){
-        const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-        
-        if (!loggedUser?.id) return;
-        if (!loggedUser.timestamp) return;
-        
-        const currentTimestamp = new Date().getTime();
-        
-        
-        if (Number(loggedUser.timestamp) + localStorageExpirationMinutes < currentTimestamp){
-            console.log(`User timestamp: ${getDateInHumanForm(Number(loggedUser.timestamp))}
-            max allowed timestamp: ${getDateInHumanForm(Number(loggedUser.timestamp) + localStorageExpirationMinutes)}
-            current timestamp: ${getDateInHumanForm(currentTimestamp)}
-            `)
-            localStorage.removeItem('loggedUser')
-            return;
-        } 
 
-        return loggedUser;
+    function loginFromLS(){
+        console.log('abubibubu')
+        loginStorageUser();
+        nav('/animals');
     }
 
     return (
@@ -110,7 +83,10 @@ export const LoginPage = ({ setLoggedUser }) => {
                     Don't have an account?
                     <Link to='/register'>Create one!</Link>
                 </div>
-                {getStorageUser() && <div>Continue as "{getStorageUser().username}"</div>}
+                {validateStorageUser() && <div
+                    style={{ cursor: 'pointer' }}
+                    onClick={loginFromLS}
+                    >Continue as "{validateStorageUser().username}"</div>}
             </div>
         </div>
     )

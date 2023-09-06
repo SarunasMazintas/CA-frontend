@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useContext } from 'react';
 import { MyBackendContext } from '../../App'
+import { useNavigate } from 'react-router-dom';
 
-export const CreateAnimal = ({loginStorageUser}) => {
+export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
     const backendUrl = useContext(MyBackendContext);
     const [message, setMessage] = useState();
 
@@ -41,9 +42,17 @@ export const CreateAnimal = ({loginStorageUser}) => {
             })
 
     }
+    const nav = useNavigate();
+
+    async function checkLoggedInformation() {
+        if (loggedUser) return;
+        console.log('Trying to log from local storage');
+        const user = await loginStorageUser();
+        if (!user) nav('/');
+    }
 
     useEffect(() => {
-        loginStorageUser();
+        checkLoggedInformation();
     }, []);
 
     return (

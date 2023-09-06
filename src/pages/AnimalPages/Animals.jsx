@@ -17,7 +17,7 @@ export const Animals = ({ toggleFavorite, loggedUser, getAnimalsList, animals, l
   const [filters, setFilters] = useReducer((currentValue, patchInfo) => {
     let newValue = { ...currentValue };
     Object.keys(patchInfo).forEach(key => {
-      console.log(`Filter ${key} changed from '${currentValue[key]}' to '${patchInfo[key]}'`);
+      //console.log(`Filter ${key} changed from '${currentValue[key]}' to '${patchInfo[key]}'`);
       newValue[key] = patchInfo[key]
     })
     return newValue;
@@ -27,21 +27,18 @@ export const Animals = ({ toggleFavorite, loggedUser, getAnimalsList, animals, l
     const animalAges = animals.map(animal => Number(animal.age));
     return Math.max(...animalAges);
   }
-
+  async function checkLoggedInformation(){
+    if (loggedUser) return;
+    console.log('Trying to log from local storage');
+    const user = await loginStorageUser();
+    if (!user) nav('/');
+  }
+  
   useEffect(() => {
     getAnimalsList();
-    loginStorageUser();
+    checkLoggedInformation();
 
   }, [])
-
-  useEffect(() => {
-    console.log('Filters changed, ', filters);
-    console.log(animals && animals
-      .filter(animal => animal.age >= filters.minAge)
-      .filter(animal => animal.age <= filters.maxAge)
-      .filter(animal => animal.type === filters.type)
-    )
-  }, [filters]);
 
   return (
     <div className='animals-page'>

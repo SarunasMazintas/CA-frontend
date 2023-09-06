@@ -23,7 +23,6 @@ export const FilterToolbar = ({ animals, setFilters, getMaxValue }) => {
     }
 
     useEffect(() => {
-        console.log(Number.isFinite(maxValue2)?maxValue2:maxAge);
         setFilters({
             minAge: minValue2,
             maxAge: Number.isFinite(maxValue2)?maxValue2:maxAge,
@@ -62,7 +61,6 @@ export const FilterToolbar = ({ animals, setFilters, getMaxValue }) => {
                     onChange={(e) => {
                         setMinValue2(e.minValue);
                         setMaxValue2(e.maxValue);
-                        console.log('kakarieku');
                     }}
                 />
                 <span>{maxValue}</span>

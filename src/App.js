@@ -10,12 +10,24 @@ import { Favorites } from './pages/AnimalPages/Favorites';
 import { Animal } from './pages/AnimalPages/Animal';
 export const MyBackendContext = createContext()
 
+const localStorageExpirationMinutes = 1000 * 60 * 10;
+
+function getDateInHumanForm(timestamp) {
+  const date2 = new Date(Number(timestamp));
+  const year = date2.getFullYear()
+  const month = String(date2.getMonth()).length < 2 ? '0' + (date2.getMonth() + 1) : date2.getMonth();
+  const day = String(date2.getDate()).length < 2 ? '0' + date2.getDate() : date2.getDate();
+  const hour = String(date2.getHours())
+  const minutes = String(date2.getMinutes())
+  const seconds = String(date2.getSeconds())
+  return '' + year + '-' + month + '-' + day + ', ' + hour + ':' + minutes + ':' + seconds
+}
+
 function App() {
 
 
 
   const backendUrl = 'http://localhost:8001';
-  //const [loggedUser, setLoggedUser] = useState({ _id: '64f21532ad9c24462c52f9af', username: '5', password: '$2b$10$enBX4lUmBffjjT7RpQcLk.XhIMmtlgQzppnodsoI8.m4w20AuhMhi', image: 'https://cdn-icons-png.flaticon.com/512/6386/6386976.png', __v: 1, favorites: ['ututu'] });
   const [loggedUser, setLoggedUser] = useState();
   const [animals, setAnimals] = useState([]);
 
@@ -23,29 +35,42 @@ function App() {
     console.log(loggedUser)
   }, [loggedUser]);
 
-  useEffect(() => {
-    loginStorageUser();
-  }, [])
+  function validateStorageUser(){
 
-  useEffect(() => {
-    console.log('6' , animals);
-  }, [animals])
-
-  async function loginStorageUser() {
-    if (loggedUser) return;
-    const lsloggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-
-    if (!lsloggedUser?.id) return;
-    if (!lsloggedUser.timestamp) return;
-
-    const user = await getUserFromDB(lsloggedUser.id)
-    console.log(user);
-    setLoggedUser(user)
-    getAnimalsList();
-    console.log(loggedUser)
-    return user;
+    const currentTimestamp = new Date().getTime();
+  
+    const lsLoggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+  
+    if (!lsLoggedUser?.id) return;
+    if (!lsLoggedUser.timestamp) return;
+  
+    if (Number(lsLoggedUser.timestamp) + localStorageExpirationMinutes < currentTimestamp) {
+        console.log(`User timestamp: ${getDateInHumanForm(Number(lsLoggedUser.timestamp))}
+        max allowed timestamp: ${getDateInHumanForm(Number(lsLoggedUser.timestamp) + localStorageExpirationMinutes)}
+        current timestamp: ${getDateInHumanForm(currentTimestamp)}
+        `)
+        localStorage.removeItem('loggedUser')
+        return;
+    }
+    return lsLoggedUser
   }
 
+  async function loginStorageUser() {
+
+    if (loggedUser) return;
+
+    const lsLoggedUser = validateStorageUser();
+
+    if (!lsLoggedUser) return;
+
+    const user = await getUserFromDB(lsLoggedUser.id)
+
+    //fetch data to components that need data ready;
+    setLoggedUser(user)
+    getAnimalsList();
+
+    return user;
+  }
 
   async function getUserFromDB(id) {
 
@@ -108,16 +133,18 @@ function App() {
       })
   }
 
+  function logOut(){
+    localStorage.removeItem('loggedUser')
+  }
+
 
 
   async function getAnimalsList() {
     const request = await fetch(backendUrl + '/getAnimalsList');
     const data = await request.json();
-    console.log('5', data)
     if (data.animals) {
       setAnimals(current => data.animals)
     }
-    console.log('4', animals)
     return data.animals;
   }
 
@@ -127,16 +154,16 @@ function App() {
     <div className="App">
       <MyBackendContext.Provider value={backendUrl}>
         <BrowserRouter>
-          <Toolbar loggedUser={loggedUser} />
+          <Toolbar loggedUser={loggedUser} logOut={logOut} />
           <div className="content">
             <Routes>
-              <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} />}></Route>
+              <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} loginStorageUser={loginStorageUser} validateStorageUser={validateStorageUser}/>}></Route>
 
               <Route path='/register' element={<RegisterPage />}></Route>
 
               <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals} loginStorageUser={loginStorageUser}/>}></Route>
 
-              <Route path='/create-animal' element={<CreateAnimal loginStorageUser={loginStorageUser}/>}></Route>
+              <Route path='/create-animal' element={<CreateAnimal loggedUser={loggedUser} loginStorageUser={loginStorageUser}/>}></Route>
 
               <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser}/>}></Route>
 

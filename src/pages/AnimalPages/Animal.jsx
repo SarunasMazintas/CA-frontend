@@ -16,21 +16,21 @@ export const Animal = ({ animals, loggedUser, toggleFavorite, loginStorageUser, 
 
     const nav = useNavigate();
 
-    async function checkLoggedInformation() {
+    async function init() {
+        setAnimal(animals.find(animal => animal._id === id));
         if (loggedUser) return;
-        const animalsDB = await getAnimalsList();
-
+        
         console.log('Trying to log from local storage');
         const user = await loginStorageUser();
         if (!user) return nav('/');
-
+        
+        const animalsDB = await getAnimalsList();
         setAnimal(animalsDB.find(animal => animal._id === id));
 
     }
-    //TODO: change checkLogged to init function and get animal from DB
+    
     useEffect(() => {
-        setAnimal(animals.find(animal => animal._id === id));
-        checkLoggedInformation();
+        init();
     }, []);
 
 

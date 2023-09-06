@@ -1,0 +1,11 @@
+Local Storage funkcionalumas:
+
+Login metu userio sutrumpinta informacija įrašoma į local storage;
+Perkrovus bet kurioje vietoje puslapį, useris iš localStorage prijungiamas automatiškai, puslapis nelūžta;
+Jei useris prisijungė seniau nei prieš 10 minučių, localStorage reikšmė ištrinama ir useris nukreipiamas į prisijungimo langą;
+Jei useris jau prisijungdamas pakartotinai pateko į login puslapį, jam pasiūloma prisijungti nevedant duomenų;
+
+
+Messages: 
+Kol užkraunamos žinutes - matomas langas "Loading..."
+Prisijungęs useris savo žinutes mato kaip "Me" vietoje savo vardo;
