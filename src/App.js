@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { LoginPage } from './pages/login/LoginPage';
 import { RegisterPage } from './pages/login/RegisterPage';
@@ -23,7 +23,29 @@ function App() {
     console.log(loggedUser)
   }, [loggedUser]);
 
-  useEffect(() => console.log(document.location.pathname))
+  useEffect(() => {
+    loginStorageUser();
+  }, [])
+
+  useEffect(() => {
+    console.log('6' , animals);
+  }, [animals])
+
+  async function loginStorageUser() {
+    if (loggedUser) return;
+    const lsloggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+
+    if (!lsloggedUser?.id) return;
+    if (!lsloggedUser.timestamp) return;
+
+    const user = await getUserFromDB(lsloggedUser.id)
+    console.log(user);
+    setLoggedUser(user)
+    getAnimalsList();
+    console.log(loggedUser)
+    return user;
+  }
+
 
   async function getUserFromDB(id) {
 
@@ -61,14 +83,13 @@ function App() {
 
     let newFavorites = loggedUser.favorites;
 
-    if (newFavorites.includes(animalId)){
+    if (newFavorites.includes(animalId)) {
       newFavorites = newFavorites.filter(animal => animal !== animalId)
     } else {
       newFavorites = [...newFavorites, animalId]
     }
 
     const user = {
-      _id: loggedUser._id,
       favorites: JSON.stringify(newFavorites)
     }
 
@@ -80,23 +101,24 @@ function App() {
       body: JSON.stringify(user)
     }
 
-    fetch(backendUrl + '/updateUser', options)
+    fetch(backendUrl + '/updateUser/' + loggedUser._id, options)
       .then(res => res.json())
       .then(data => {
         getLoggedUserFromDB();
-        console.log('data', data);
       })
   }
 
-  async function getAnimalsList(){
+
+
+  async function getAnimalsList() {
     const request = await fetch(backendUrl + '/getAnimalsList');
     const data = await request.json();
-
-    if (data.animals){
-      setAnimals(data.animals)
+    console.log('5', data)
+    if (data.animals) {
+      setAnimals(current => data.animals)
     }
-    //.then(data => data.json())
-    //.then(data => setAnimals(data.animals))
+    console.log('4', animals)
+    return data.animals;
   }
 
 
@@ -107,16 +129,20 @@ function App() {
         <BrowserRouter>
           <Toolbar loggedUser={loggedUser} />
           <div className="content">
-          <Routes>
-            <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} />}></Route>
-            <Route path='/register' element={<RegisterPage />}></Route>
-            <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals}/>}></Route>
-            <Route path='/create-animal' element={<CreateAnimal />}></Route>
-            <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
-            
-            <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite}/>}></Route>
+            <Routes>
+              <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} />}></Route>
 
-          </Routes>
+              <Route path='/register' element={<RegisterPage />}></Route>
+
+              <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals} loginStorageUser={loginStorageUser}/>}></Route>
+
+              <Route path='/create-animal' element={<CreateAnimal loginStorageUser={loginStorageUser}/>}></Route>
+
+              <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser}/>}></Route>
+
+              <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList}/>}></Route>
+
+            </Routes>
           </div>
         </BrowserRouter>
       </MyBackendContext.Provider>

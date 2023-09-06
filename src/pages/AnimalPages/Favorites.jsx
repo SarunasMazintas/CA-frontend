@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AnimalCard } from '../../components/animalComponents/AnimalCard'
+import { useNavigate } from 'react-router-dom';
 
-export const Favorites = ({ animals, loggedUser, toggleFavorite }) => {
+export const Favorites = ({ animals, loggedUser, toggleFavorite, loginStorageUser }) => {
+
+  const nav = useNavigate();
+
+  async function checkLoggedInformation(){
+    if (loggedUser) return;
+    console.log('Trying to log from local storage');
+    const user = await loginStorageUser();
+    if (!user) nav('/');
+  }
+
+  useEffect(() => {
+    checkLoggedInformation();
+  }, []);
+
   return (
     <div className='favorites-page'>
       <h1>My Favorites</h1>

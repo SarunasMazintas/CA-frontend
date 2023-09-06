@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MultiRangeSlider from "multi-range-slider-react";
 
-export const FilterToolbar = ({ animals, setFilters }) => {
-
-    const getMaxValue = () => {
-        const animalAges = animals.map(animal => Number(animal.age));
-        console.log(5);
-        return Math.max(...animalAges);
-    }
+export const FilterToolbar = ({ animals, setFilters, getMaxValue }) => {
 
     const maxAge = getMaxValue();
     const [minValue, setMinValue] = useState(0);
@@ -29,13 +23,13 @@ export const FilterToolbar = ({ animals, setFilters }) => {
     }
 
     useEffect(() => {
-        console.log('miau')
+        console.log(Number.isFinite(maxValue2)?maxValue2:maxAge);
         setFilters({
             minAge: minValue2,
-            maxAge: maxValue2,
+            maxAge: Number.isFinite(maxValue2)?maxValue2:maxAge,
             type: typeRef.current.value
         })
-    }, [maxValue2, minValue2, typeRef.current], animals)
+    }, [maxValue2, minValue2, typeRef.current, animals])
 
     return (
         <div className='filter-toolbar'>
@@ -55,9 +49,9 @@ export const FilterToolbar = ({ animals, setFilters }) => {
                     ruler={false}
                     label={false}
                     minValue={minValue}
-                    maxValue={maxValue}
+                    maxValue={Number.isFinite(maxValue2)?maxValue2:maxAge}
                     maxValue2={maxValue2}
-                    minValue2={minValue2}
+                    minValue2={Number.isFinite(maxValue2)?maxValue2:maxAge}
                     min={0}
                     max={maxAge}
                     step={1}
@@ -69,7 +63,6 @@ export const FilterToolbar = ({ animals, setFilters }) => {
                         setMinValue2(e.minValue);
                         setMaxValue2(e.maxValue);
                         console.log('kakarieku');
-                        //setgameStats({lives: -1, games: 2})
                     }}
                 />
                 <span>{maxValue}</span>

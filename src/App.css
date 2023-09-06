@@ -8,11 +8,11 @@
 }
 
 .toolbar {
-  margin: 2px;
+  margin-bottom: 2px;
   background-color: rgb(240, 240, 255);
-  border-radius: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   -moz-column-gap: 20px;
        column-gap: 20px;
 }
@@ -129,7 +129,7 @@ button:hover {
 
 .comments-wrapper {
   height: 100%;
-  background-color: bisque;
+  background-color: rgb(255, 244, 244);
   display: grid;
   grid-template-rows: 1fr 20px;
 }

@@ -10,7 +10,7 @@ export const Comment = ({comment, users, loggedUser}) => {
   return (
     <div className='comment'>
         <span className='username'>{getUsername()}</span>
-        :
+        <span className='separator'>: </span>
         <span className='message'>{comment.message}</span>
     </div>
   )

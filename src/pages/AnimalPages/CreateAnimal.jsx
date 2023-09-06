@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useContext } from 'react';
 import { MyBackendContext } from '../../App'
 
-export const CreateAnimal = () => {
+export const CreateAnimal = ({loginStorageUser}) => {
     const backendUrl = useContext(MyBackendContext);
     const [message, setMessage] = useState();
 
@@ -41,6 +41,10 @@ export const CreateAnimal = () => {
             })
 
     }
+
+    useEffect(() => {
+        loginStorageUser();
+    }, []);
 
     return (
         <div className='animal-creation'>
