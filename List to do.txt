@@ -1,15 +1,25 @@
-Padaryti, kad prisijungus prie sistemos į localStorage arba cookies įsirašytų prisijungusio userio ID, ir tada beliktų jį parsifetchint.
-    login lange būtų galima pasisveikinti ir paklausti, ar jis nori prisijungti
-Visur įgyvendinti logiką kaip Animal.js, kad jei nėra loggedUser local storage, įvyktų redirect to login
-
-Padaryti laiko limitą, kad jei buvo prisijungęs jau anksčiau nei prieš valandą, atjungtų.
-Jei prisijungimas užfiksuotas seniau nei prieš 10 minučių, veikti taip, kaip iki šiol;
 
 Jei gyvūnas yra removinamas iš sąrašo, bet lieka favorituose, jo kortelę rodyti kaip nebegaliojančią ir leisti išsiimti iš favoritų
 
 Animals Galery
 
-Dizainas likęs, ypač login/register
+Pačiam įvesti gyvūnų tipus
+
+Dizainas likęs, ypač login/register, add animal
+Add animal dizainas: įvedus paveiksliuko url jį atvaizduoti šalia onChange, kaip preview;
+
+Modifikuoti gyvūno informaciją
+
+
+Done: Padaryti laiko limitą, kad jei buvo prisijungęs jau anksčiau nei prieš tam tikrą laiko tarpą, atjungtų.
+
+Done: Messages: patikrinti, gal kol undefined, padaryti užrašą loading, o gavus tuščią array perdaryti pagal rezultatą
+
+Done: login lange būtų galima pasisveikinti ir paklausti, ar jis nori prisijungti
+
+Done: Visur įgyvendinti logiką kaip Animal.js, kad jei nėra loggedUser local storage, įvyktų redirect to login
+
+Done: Padaryti, kad prisijungus prie sistemos į localStorage arba cookies įsirašytų prisijungusio userio ID, ir tada beliktų jį parsifetchint.
 
 Done: Padaryti filtrus;
 Done: Padaryti gyvūno kortelę ir komentarus joje, gal pavyktų pagal userį padaryt;
