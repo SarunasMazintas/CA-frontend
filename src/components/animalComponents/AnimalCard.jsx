@@ -1,34 +1,69 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export const AnimalCard = ({ animal, toggleFavorite, loggedUser }) => {
+export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUser, removeAnimal }) => {
+
+    let currentAnimal;
+    const buttonFavRef = useRef();
+    const removeButton = useRef();
+
+    if (animal) {
+        currentAnimal = animal;
+    } else {
+        const animalFound = animals.find(current => current._id === animalId);
+        if (animalFound) {
+            currentAnimal = animalFound;
+        } else {
+            currentAnimal = {
+                _id: animalId,
+                deleted: true
+            }
+        }
+    }
+
     const nav = useNavigate();
 
     const image = () => {
-        //console.log(animal);
-        return animal.image !== '' ? animal.image : "http://localhost:8001/images/no-image.jpg";
+        if (currentAnimal && !currentAnimal.deleted) return currentAnimal?.image !== '' ? currentAnimal.image : "http://localhost:8001/images/no-image.jpg";
+        if (currentAnimal.deleted) return "http://localhost:8001/images/deleted.jpg"
     }
 
-    function toggleThisFavorite() {
-        toggleFavorite(animal._id);
+    async function toggleThisFavorite() {
+        buttonFavRef.current.disabled = true;
+        const result = await toggleFavorite(currentAnimal._id);
+        console.log(result);
+        buttonFavRef.current.disabled = false;
     }
 
     function navToAnimal() {
-        nav('/animal/' + animal._id);
+        if (!currentAnimal.deleted) {
+            nav('/animal/' + currentAnimal._id);
+        }
+    }
+
+    async function removeThisAnimal() {
+        removeButton.current.disabled = true;
+        const result = await removeAnimal(currentAnimal._id)
+        removeButton.current.disabled = false;
     }
 
 
+
     return (
-        <div className='animal-card'>
-            <div className="image-wrapper" onClick={navToAnimal} style={{cursor: 'pointer'}}>
-                <img src={image()} alt="" />
-            </div>
-            <div className="information-wrapper">
-                <div className="name">Name: {animal.name}</div>
-                <div className="type">Type: {animal.type}</div>
-                <div className="age">Age: {animal.age}</div>
-            </div>
-            <button onClick={toggleThisFavorite}>{loggedUser?.favorites.includes(animal._id) ? 'Remove from Favorites' : 'Add to Favorites'}</button>
+        <div>
+            {animals?.length > 0 && <div className='animal-card'>
+                <div className="image-wrapper" onClick={navToAnimal} style={{ cursor: 'pointer' }}>
+                    <img src={image()} alt="" />
+                </div>
+                {!currentAnimal.deleted && <div className="information-wrapper">
+                    <div className="name">Name: {currentAnimal?.name}</div>
+                    <div className="type">Type: {currentAnimal?.type}</div>
+                    <div className="age">Age: {currentAnimal?.age}</div>
+                </div>}
+                {currentAnimal.deleted && <div className='deleted-message'>Animal is no longer available</div>}
+                <button ref={buttonFavRef} onClick={toggleThisFavorite}>{loggedUser?.favorites.includes(currentAnimal._id) ? 'Remove from Favorites' : 'Add to Favorites'}</button>
+                {removeAnimal && <button ref={removeButton} onClick={removeThisAnimal}>Remove</button>}
+            </div>}
         </div>
     )
 }

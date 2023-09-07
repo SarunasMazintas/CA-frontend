@@ -83,6 +83,10 @@
             object-fit: cover;
             border-radius: 15px;
         }
+
+        img:hover{
+            opacity: 0.8;
+        }
     }
 }
 

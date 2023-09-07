@@ -78,6 +78,9 @@
      object-fit: cover;
   border-radius: 15px;
 }
+.animal-card .image-wrapper img:hover {
+  opacity: 0.8;
+}
 
 button {
   border-radius: 10px;

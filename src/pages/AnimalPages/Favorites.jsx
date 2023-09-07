@@ -21,8 +21,10 @@ export const Favorites = ({ animals, loggedUser, toggleFavorite, loginStorageUse
     <div className='favorites-page'>
       <h1>My Favorites</h1>
       <div className="animals">
-        {animals && animals.filter(animal => loggedUser.favorites.includes(animal._id))
-        .map(animal => <AnimalCard animal={animal} key={animal._id} toggleFavorite={toggleFavorite} loggedUser={loggedUser} />)}
+        {/* {animals && animals.filter(animal => loggedUser.favorites.includes(animal._id))
+        .map(animal => <AnimalCard animal={animal} key={animal._id} toggleFavorite={toggleFavorite} loggedUser={loggedUser} />)} */}
+        {animals && loggedUser?.favorites
+        .map(animalId => <AnimalCard animalId={animalId} animals={animals} key={animalId} toggleFavorite={toggleFavorite} loggedUser={loggedUser} />)}
       </div>
     </div>
   )

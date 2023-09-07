@@ -16,6 +16,8 @@ export const FilterToolbar = ({ animals, setFilters, getMaxValue }) => {
         setMaxValue2(maxAge);
         setMinValue(0);
         setMinValue2(0);
+        setFilters({ type: '' });
+        typeRef.current.value = '';
     }
 
     function filterTypeChanged(e) {

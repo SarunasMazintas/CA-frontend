@@ -9,3 +9,11 @@ Jei useris jau prisijungdamas pakartotinai pateko į login puslapį, jam pasiūl
 Messages: 
 Kol užkraunamos žinutes - matomas langas "Loading..."
 Prisijungęs useris savo žinutes mato kaip "Me" vietoje savo vardo;
+
+
+
+Backend:
+Visur sudėtos apsaugos, jei netyčia persiduotų ne ID
+
+Filtrai: 
+Amžiaus filtras prisitaiko prie max ribos;

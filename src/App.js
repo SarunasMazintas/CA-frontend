@@ -35,22 +35,22 @@ function App() {
     console.log(loggedUser)
   }, [loggedUser]);
 
-  function validateStorageUser(){
+  function validateStorageUser() {
 
     const currentTimestamp = new Date().getTime();
-  
+
     const lsLoggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-  
+
     if (!lsLoggedUser?.id) return;
     if (!lsLoggedUser.timestamp) return;
-  
+
     if (Number(lsLoggedUser.timestamp) + localStorageExpirationMinutes < currentTimestamp) {
-        console.log(`User timestamp: ${getDateInHumanForm(Number(lsLoggedUser.timestamp))}
+      console.log(`User timestamp: ${getDateInHumanForm(Number(lsLoggedUser.timestamp))}
         max allowed timestamp: ${getDateInHumanForm(Number(lsLoggedUser.timestamp) + localStorageExpirationMinutes)}
         current timestamp: ${getDateInHumanForm(currentTimestamp)}
         `)
-        localStorage.removeItem('loggedUser')
-        return;
+      localStorage.removeItem('loggedUser')
+      return;
     }
     return lsLoggedUser
   }
@@ -104,7 +104,7 @@ function App() {
     }
   }
 
-  function toggleFavorite(animalId) {
+  async function toggleFavorite(animalId) {
 
     let newFavorites = loggedUser.favorites;
 
@@ -126,14 +126,14 @@ function App() {
       body: JSON.stringify(user)
     }
 
-    fetch(backendUrl + '/updateUser/' + loggedUser._id, options)
-      .then(res => res.json())
-      .then(data => {
-        getLoggedUserFromDB();
-      })
+    const res = await fetch(backendUrl + '/updateUser/' + loggedUser._id, options)
+    const data = await res.json();
+    getLoggedUserFromDB();
+
+    return data;
   }
 
-  function logOut(){
+  function logOut() {
     localStorage.removeItem('loggedUser')
   }
 
@@ -157,17 +157,17 @@ function App() {
           <Toolbar loggedUser={loggedUser} logOut={logOut} />
           <div className="content">
             <Routes>
-              <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} loginStorageUser={loginStorageUser} validateStorageUser={validateStorageUser}/>}></Route>
+              <Route path='/' element={<LoginPage setLoggedUser={setLoggedUser} loginStorageUser={loginStorageUser} validateStorageUser={validateStorageUser} />}></Route>
 
               <Route path='/register' element={<RegisterPage />}></Route>
 
-              <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals} loginStorageUser={loginStorageUser}/>}></Route>
+              <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals} loginStorageUser={loginStorageUser} />}></Route>
 
-              <Route path='/create-animal' element={<CreateAnimal loggedUser={loggedUser} loginStorageUser={loginStorageUser}/>}></Route>
+              <Route path='/create-animal' element={<CreateAnimal loggedUser={loggedUser} loginStorageUser={loginStorageUser} />}></Route>
 
-              <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser}/>}></Route>
+              <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser} />}></Route>
 
-              <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList}/>}></Route>
+              <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList} />}></Route>
 
             </Routes>
           </div>
