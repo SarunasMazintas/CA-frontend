@@ -1,15 +1,16 @@
-
-Jei gyvūnas yra removinamas iš sąrašo, bet lieka favorituose, jo kortelę rodyti kaip nebegaliojančią ir leisti išsiimti iš favoritų
-
 Animals Galery
 
-Pačiam įvesti gyvūnų tipus
+
+Modifikuoti gyvūno informaciją. pvz sukišti form control'us į kaip komponentą ir jame valdyti informaciją, ar jis yra koreguojamas, ar ne.
 
 Dizainas likęs, ypač login/register, add animal
 Add animal dizainas: įvedus paveiksliuko url jį atvaizduoti šalia onChange, kaip preview;
+Paieškoti, gal yra koks nors choice laukas.
 
-Modifikuoti gyvūno informaciją
+Administratoriaus puslapis, kuriame bus galima įvesti pridėti tipus.
+Pačiam įvesti gyvūnų tipus
 
+Done: Jei gyvūnas yra removinamas iš sąrašo, bet lieka favorituose, jo kortelę rodyti kaip nebegaliojančią ir leisti išsiimti iš favoritų
 
 Done: Padaryti laiko limitą, kad jei buvo prisijungęs jau anksčiau nei prieš tam tikrą laiko tarpą, atjungtų.
 
