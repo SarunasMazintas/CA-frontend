@@ -10,7 +10,7 @@ import { Favorites } from './pages/AnimalPages/Favorites';
 import { Animal } from './pages/AnimalPages/Animal';
 export const MyBackendContext = createContext()
 
-const localStorageExpirationMinutes = 1000 * 60 * 10;
+const localStorageExpirationMinutes = 1000 * 60 * 100;
 
 function getDateInHumanForm(timestamp) {
   const date2 = new Date(Number(timestamp));

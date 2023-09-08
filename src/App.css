@@ -144,4 +144,87 @@ button:hover {
 .comments-wrapper .controls {
   display: grid;
   grid-template-columns: 4fr 1fr;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.gallery > .image-wrapper {
+  display: flex;
+  justify-content: space-between;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition-duration: 300ms;
+  height: 400px;
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.gallery > .image-wrapper > .icon {
+  background-color: rgba(255, 255, 255, 0.048);
+  width: 50px;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  align-self: center;
+  transition-duration: 0.15s;
+}
+.gallery > .image-wrapper > .icon:hover {
+  background-color: rgba(255, 255, 255, 0.389);
+  transition-duration: 0.15s;
+}
+@media (max-width: 600px) {
+  .gallery > .image-wrapper > .icon {
+    width: 30px;
+  }
+}
+.gallery > .small-pics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.gallery > .small-pics img {
+  max-width: 80px;
+  max-height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition-duration: 300ms;
+  border-radius: 15px;
+  overflow: hidden;
+}
+@media (max-width: 600px) {
+  .gallery > .small-pics img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+}
+@media (max-width: 400px) {
+  .gallery > .small-pics img {
+    max-width: 30px;
+    max-height: 30px;
+  }
+}
+
+.animal-creation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.new-photos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.new-photos .delete-new-photo {
+  cursor: pointer;
+  margin: 3px 10px;
+  padding: 3px;
+  border-radius: 15px;
+  background-color: rgba(219, 106, 106, 0.267);
 }/*# sourceMappingURL=App.css.map */

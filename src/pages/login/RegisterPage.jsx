@@ -9,6 +9,7 @@ export const RegisterPage = () => {
     const nav = useNavigate();
 
     const usernameRef = useRef();
+    const nameRef = useRef();
     const passwordRef = useRef();
     const passwordRef2 = useRef();
 
@@ -29,6 +30,7 @@ export const RegisterPage = () => {
 
         const user = {
             username: usernameRef.current.value,
+            name: nameRef.current.value,
             password: passwordRef.current.value,
         }
 
@@ -55,6 +57,11 @@ export const RegisterPage = () => {
             <div className="form-control">
                 <label htmlFor="username"> Username: </label>
                 <input type="text" id='username' ref={usernameRef} />
+            </div>
+
+            <div className="form-control">
+                <label htmlFor="name"> Name: </label>
+                <input type="text" id='name' ref={nameRef} />
             </div>
 
             <div className="form-control">

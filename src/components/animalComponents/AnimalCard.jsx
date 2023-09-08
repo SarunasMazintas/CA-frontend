@@ -24,7 +24,7 @@ export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUs
     const nav = useNavigate();
 
     const image = () => {
-        if (currentAnimal && !currentAnimal.deleted) return currentAnimal?.image !== '' ? currentAnimal.image : "http://localhost:8001/images/no-image.jpg";
+        if (currentAnimal && !currentAnimal.deleted) return currentAnimal?.images[0] !== '' ? currentAnimal.images[0] : "http://localhost:8001/images/no-image.jpg";
         if (currentAnimal.deleted) return "http://localhost:8001/images/deleted.jpg"
     }
 
