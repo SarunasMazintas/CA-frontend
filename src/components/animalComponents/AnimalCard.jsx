@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUser, removeAnimal }) => {
 
+
     let currentAnimal;
     const buttonFavRef = useRef();
     const removeButton = useRef();
@@ -24,7 +25,8 @@ export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUs
     const nav = useNavigate();
 
     const image = () => {
-        if (currentAnimal && !currentAnimal.deleted) return currentAnimal?.images[0] !== '' ? currentAnimal.images[0] : "http://localhost:8001/images/no-image.jpg";
+        console.log(currentAnimal);
+        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[0] : "http://localhost:8001/images/no-image.jpg";
         if (currentAnimal.deleted) return "http://localhost:8001/images/deleted.jpg"
     }
 
@@ -62,7 +64,7 @@ export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUs
                 </div>}
                 {currentAnimal.deleted && <div className='deleted-message'>Animal is no longer available</div>}
                 <button ref={buttonFavRef} onClick={toggleThisFavorite}>{loggedUser?.favorites.includes(currentAnimal._id) ? 'Remove from Favorites' : 'Add to Favorites'}</button>
-                {removeAnimal && <button ref={removeButton} onClick={removeThisAnimal}>Remove</button>}
+                {loggedUser?.isAdmin && removeAnimal && <button ref={removeButton} onClick={removeThisAnimal}>Remove</button>}
             </div>}
         </div>
     )

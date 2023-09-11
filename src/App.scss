@@ -1,5 +1,6 @@
 .App {
     max-width: 1200px;
+    min-width: 400px;
     margin-inline: auto;
 
 }
@@ -54,14 +55,15 @@
 }
 
 .animals {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-inline: auto;
+    width: 100%;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 210px));
+    justify-content: center;
 }
 
 .animal-card {
-    width: 200px;
+    
     padding: 10px;
     height: 250px;
     display: grid;
@@ -116,6 +118,7 @@ button {
 }
 
 .animals-page {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -126,8 +129,11 @@ button {
 .filter-toolbar {
     display: flex;
     justify-content: space-around;
-    width: 80%;
+    flex-wrap: wrap;
+    padding: 0px 10%;
     column-gap: 20px;
+    row-gap: 10px;
+
 
     .filter-control {
         display: flex;
@@ -209,22 +215,40 @@ button {
         flex-wrap: wrap;
         gap: 10px;
 
-        img {
-            max-width: 80px;
-            max-height: 80px;
-            object-fit: cover;
-            transition-duration: 300ms;
+
+        .image-wrapper {
+
             border-radius: 15px;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 80px;
+            max-height: 80px;
 
-            @media (max-width: 600px) {
-                max-width: 50px;
-                max-height: 50px;
+            &.selected-icon {
+                opacity: 0.7;
+                border: 2px outset
             }
 
-            @media (max-width: 400px) {
-                max-width: 30px;
-                max-height: 30px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+
+                transition-duration: 300ms;
+
+
+                @media (max-width: 600px) {
+                    max-width: 50px;
+                    max-height: 50px;
+                }
+
+                @media (max-width: 400px) {
+                    max-width: 30px;
+                    max-height: 30px;
+                }
             }
         }
     }
@@ -248,8 +272,79 @@ button {
         padding: 3px;
         border-radius: 15px;
         background-color: rgba(219, 106, 106, 0.267);
-
     }
+}
 
+.administration {
+    .types {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        justify-items: center;
+        align-items: center;
 
+        .create-type{
+            min-width: 200px;
+            
+            .create-type-form{
+                max-width: 200px;
+                gap: 5px;
+                display: flex;
+                flex-direction: column;
+
+                @media (max-width: 500px){
+                    width: 100%;
+                    max-width: none;
+                }
+
+                .form-control{
+                    input{
+                        width: 50%;
+                        min-width: 100px;
+
+                        @media (max-width: 500px){
+                            width: auto;
+                        }
+                    }
+
+                    .label {
+                        @media (max-width: 500px){
+                            width: auto;
+                        }
+                    }
+                    @media (max-width: 500px){
+                        width:auto;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                    }
+
+                }
+            }
+
+        }
+
+        .current-types {
+            min-width: 200px;
+            .types-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+
+                .type {
+
+                    padding: 5px 10px;
+                    background-color: hsl(350, 53%, 93%);
+                    border-radius: 15px;
+
+                    &:hover{
+                        background-color: hsl(351, 95%, 85%);
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        @media (max-width: 500px){
+            grid-template-columns: 1fr;
+        }
+    }
 }

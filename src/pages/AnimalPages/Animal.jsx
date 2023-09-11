@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { MyBackendContext } from '../../App'
 import { AnimalGallery } from '../../components/animalComponents/AnimalGallery';
 
-export const Animal = ({ animals, loggedUser, toggleFavorite, loginStorageUser, getAnimalsList }) => {
+export const Animal = ({ animals, loggedUser, loginStorageUser, getAnimalsList }) => {
     const backendUrl = useContext(MyBackendContext);
     const { id } = useParams();
 
@@ -18,7 +18,11 @@ export const Animal = ({ animals, loggedUser, toggleFavorite, loginStorageUser, 
     const nav = useNavigate();
 
     async function init() {
-        setAnimal(animals.find(animal => animal._id === id));
+        setAnimal(prev => {
+            const thisAnimal = animals.find(animal => animal._id === id);
+            document.title = 'Animal: ' + thisAnimal.name;
+            return thisAnimal;
+        });
         if (loggedUser) return;
 
         console.log('Trying to log from local storage');
@@ -26,8 +30,18 @@ export const Animal = ({ animals, loggedUser, toggleFavorite, loginStorageUser, 
         if (!user) return nav('/');
 
         const animalsDB = await getAnimalsList();
-        setAnimal(animalsDB.find(animal => animal._id === id));
+        setAnimal(prev => {
+            const thisAnimal = animalsDB.find(animal => animal._id === id);
+            document.title = 'Animal: ' + thisAnimal.name;
+            return thisAnimal;
+        });
+        
+    }
 
+    function editAnimal() {
+        localStorage.setItem('animalToEdit', JSON.stringify(animal));
+        console.log('Animal page, to LS: ', animal)
+        nav('/edit-animal');
     }
 
     useEffect(() => {
@@ -48,6 +62,9 @@ export const Animal = ({ animals, loggedUser, toggleFavorite, loginStorageUser, 
                     <div className="name">Name: {animal.name}</div>
                     <div className="type">Type: {animal.type}</div>
                     <div className="age">Age: {animal.age}</div>
+                    {loggedUser.isAdmin
+                        ? <button className='edit-animal-button' onClick={editAnimal}>Edit animal information</button>
+                        : <></>}
                 </div>
                 <div className="comments">
                     <div>Comments:</div>

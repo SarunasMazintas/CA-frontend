@@ -34,8 +34,14 @@ export const AnimalGallery = ({ animal, photosArray }) => {
 
     const imageWrapperRef = useRef();
 
+    const image = () => {
+        console.log(currentAnimal);
+        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[imageIndex] : "http://localhost:8001/images/no-image.jpg";
+        if (currentAnimal.deleted) return "http://localhost:8001/images/deleted.jpg"
+    }
+
     useEffect(() => {
-        imageWrapperRef.current.style.backgroundImage = `url(${currentAnimal.images[imageIndex]})`;
+        imageWrapperRef.current.style.backgroundImage = `url(${image()})`;
     }, [imageIndex, currentAnimal.images]
     );
 
@@ -60,11 +66,16 @@ export const AnimalGallery = ({ animal, photosArray }) => {
                 />}
             </div>}
             <div className="small-pics">
-                {currentAnimal?.images && currentAnimal.images.map((current, id) => 
-                    <img src={current} key={id} alt={id} style={{opacity: `${id===imageIndex?0.5:1}`}} onClick={() => {setImageIndex(id)}}></img>
+                {currentAnimal?.images && currentAnimal.images.map((current, id) =>
+                    <div className={`image-wrapper${id === imageIndex ? ' selected-icon' : ''}`}>
+                        <img src={current}
+                            key={id}
+                            alt={id}
+                            onClick={() => { setImageIndex(id) }}></img>
+                    </div>
                 )}
             </div>
         </div>
-    
+
     )
 }

@@ -15,6 +15,7 @@ export const Favorites = ({ animals, loggedUser, toggleFavorite, loginStorageUse
 
   useEffect(() => {
     checkLoggedInformation();
+    document.title = 'Favorites'
   }, []);
 
   return (

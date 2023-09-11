@@ -1,13 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useContext } from 'react';
 import { MyBackendContext } from '../../App'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimalGallery } from '../../components/animalComponents/AnimalGallery';
 
-export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
+export const CreateAnimal = ({ loggedUser, loginStorageUser, getAnimalsList, types }) => {
+
+    const location = useLocation();
+
+    const animalFromLS = JSON.parse(localStorage.getItem('animalToEdit'));
+    const onEdit = location.pathname.includes('edit-animal');
+    console.log('Create animal page, got from LS: ', animalFromLS);
     const backendUrl = useContext(MyBackendContext);
     const [message, setMessage] = useState();
-    const [animalPhotos, setAnimalPhotos] = useState([]);
+    const [animalPhotos, setAnimalPhotos] = useState(onEdit ? animalFromLS.images : []);
 
     const nameRef = useRef();
     const ageRef = useRef();
@@ -15,9 +21,9 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
     const typeRef = useRef();
     const formRef = useRef();
 
-    function submit() {
-        setMessage();
+    const nav = useNavigate();
 
+    async function createAnimal() {
         const animal = {
             name: nameRef.current.value,
             age: ageRef.current.value,
@@ -33,18 +39,58 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
             body: JSON.stringify(animal)
         }
         console.log(JSON.stringify(animal))
-        fetch(backendUrl + '/addAnimal', options)
-            .then(res => res.json())
-            .then(data => {
-                if (data.animal) {
-                    setMessage('Animal created!');
-                } else {
-                    setMessage(JSON.stringify(data.error));
-                }
-            })
+        const res = await fetch(backendUrl + '/addAnimal', options)
+        const data = await res.json();
+        if (data.animal) {
+            console.log(data.animal)
+            setMessage('Animal created!');
+            await getAnimalsList();
+            nav('/animal/' + data.animal._id);
+        } else {
+            setMessage(JSON.stringify(data.error));
+        }
+    }
+
+    async function updateAnimal() {
+        const animal = {
+            name: nameRef.current.value,
+            age: ageRef.current.value,
+            images: animalPhotos,
+            type: typeRef.current.value,
+        }
+
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(animal)
+        }
+
+        const res = await fetch(backendUrl + '/updateAnimal/' + animalFromLS._id, options);
+        const data = await res.json();
+        console.log('update animal: ', data)
+        if (data.animal) {
+            setMessage('Animal updated!');
+        }
+        if (data.error) {
+            setMessage(JSON.stringify(data.error));
+        }
+        localStorage.removeItem('animalToEdit');
+        await getAnimalsList();
+        nav('/animal/' + animalFromLS._id);
 
     }
-    const nav = useNavigate();
+
+    async function submit() {
+        setMessage();
+
+        if (onEdit) {
+            await updateAnimal();
+        } else {
+            await createAnimal();
+        }
+    }
 
     async function checkLoggedInformation() {
         if (loggedUser) return;
@@ -54,6 +100,15 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
     }
 
     useEffect(() => {
+        if (onEdit) {
+            nameRef.current.value = animalFromLS.name;
+            ageRef.current.value = animalFromLS.age;
+            typeRef.current.value = animalFromLS.type;
+            document.title = 'Update animal: ' + animalFromLS.name
+        } else {
+            document.title = 'Add animal';
+        }
+
         checkLoggedInformation();
     }, []);
 
@@ -64,7 +119,7 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
         formRef.current.reset();
     }
 
-    function removePhotoFromArray(url){
+    function removePhotoFromArray(url) {
         setAnimalPhotos(prev => prev.filter(x => x !== url));
     }
 
@@ -82,8 +137,9 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
                 <div className="form-control">
                     <label htmlFor="type"> Type: </label>
                     <select name="type" id="type" ref={typeRef}>
-                        <option value="cat">Cat</option>
-                        <option value="dog">Dog</option>
+                        {types && types.map(type =>
+                            <option value={type.name}>{type.name[0].toUpperCase() + type.name.slice(1)}</option>
+                        )}
                     </select>
                 </div>
                 <div className="images">
@@ -93,7 +149,7 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
                             <label htmlFor="image"> Image Url: </label>
                             <input type="text" id='image' ref={imageRef} />
                         </div>
-                        <input type="submit" value="Add image" />
+                        <input type="submit" value={"Add image"} />
                     </form>
                     <br />
                 </div>
@@ -106,7 +162,7 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser }) => {
                     })}
                 </div>
                 <br />
-                <button onClick={submit}>Add animal!</button>
+                <button onClick={submit}>{onEdit ? 'Submit changes' : 'Add animal'}!</button>
                 {message && <div className="error-message">{message}</div>}
             </div>
             <div className="gallery">

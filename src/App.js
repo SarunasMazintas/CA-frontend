@@ -8,6 +8,7 @@ import { CreateAnimal } from './pages/AnimalPages/CreateAnimal';
 import { createContext, useEffect, useState } from 'react';
 import { Favorites } from './pages/AnimalPages/Favorites';
 import { Animal } from './pages/AnimalPages/Animal';
+import { AdministrationPage } from './pages/Administration/AdministrationPage';
 export const MyBackendContext = createContext()
 
 const localStorageExpirationMinutes = 1000 * 60 * 100;
@@ -30,9 +31,12 @@ function App() {
   const backendUrl = 'http://localhost:8001';
   const [loggedUser, setLoggedUser] = useState();
   const [animals, setAnimals] = useState([]);
+  const [types, setTypes] = useState([]);
 
   useEffect(() => {
-    console.log(loggedUser)
+    console.log(loggedUser);
+    fetchTypes();
+    document.title = 'Animals page'
   }, [loggedUser]);
 
   function validateStorageUser() {
@@ -133,12 +137,6 @@ function App() {
     return data;
   }
 
-  function logOut() {
-    localStorage.removeItem('loggedUser')
-  }
-
-
-
   async function getAnimalsList() {
     const request = await fetch(backendUrl + '/getAnimalsList');
     const data = await request.json();
@@ -147,6 +145,18 @@ function App() {
     }
     return data.animals;
   }
+
+  async function fetchTypes() {
+    const res = await fetch(backendUrl + '/getTypes');
+    const data = await res.json();
+    console.log(data.types);
+    setTypes(data.types);
+  }
+
+  function logOut() {
+    localStorage.removeItem('loggedUser')
+  }
+
 
 
   return (
@@ -161,13 +171,17 @@ function App() {
 
               <Route path='/register' element={<RegisterPage />}></Route>
 
-              <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals} loginStorageUser={loginStorageUser} />}></Route>
+              <Route path='/animals' element={<Animals toggleFavorite={toggleFavorite} loggedUser={loggedUser} getAnimalsList={getAnimalsList} animals={animals} loginStorageUser={loginStorageUser} types={types}/>}></Route>
 
-              <Route path='/create-animal' element={<CreateAnimal loggedUser={loggedUser} loginStorageUser={loginStorageUser} />}></Route>
+              <Route path='/create-animal' element={<CreateAnimal loggedUser={loggedUser} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList} types={types}/>}></Route>
+              
+              <Route path='/edit-animal' element={<CreateAnimal loggedUser={loggedUser} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList} types={types}/>}></Route>
 
               <Route path='/favorites' element={<Favorites animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser} />}></Route>
 
-              <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} toggleFavorite={toggleFavorite} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList} />}></Route>
+              <Route path='/animal/:id' element={<Animal animals={animals} loggedUser={loggedUser} loginStorageUser={loginStorageUser} getAnimalsList={getAnimalsList} />}></Route>
+
+              <Route path='/administration' element={<AdministrationPage loggedUser={loggedUser} loginStorageUser={loginStorageUser} types={types} setTypes={setTypes} fetchTypes={fetchTypes}/>}></Route>
 
             </Routes>
           </div>
