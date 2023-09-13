@@ -63,8 +63,8 @@ export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUs
                     <div className="age">Age: {currentAnimal?.age}</div>
                 </div>}
                 {currentAnimal.deleted && <div className='deleted-message'>Animal is no longer available</div>}
-                <button ref={buttonFavRef} onClick={toggleThisFavorite}>{loggedUser?.favorites.includes(currentAnimal._id) ? 'Remove from Favorites' : 'Add to Favorites'}</button>
-                {loggedUser?.isAdmin && removeAnimal && <button ref={removeButton} onClick={removeThisAnimal}>Remove</button>}
+                <button id='remove-from-favorite-button' ref={buttonFavRef} onClick={toggleThisFavorite}>{loggedUser?.favorites.includes(currentAnimal._id) ? 'Remove from Favorites' : 'Add to Favorites'}</button>
+                {loggedUser?.isAdmin && removeAnimal && <button id='remove-button' ref={removeButton} onClick={removeThisAnimal}>Remove</button>}
             </div>}
         </div>
     )

@@ -143,6 +143,11 @@ body {
     gap: 15px;
     grid-template-columns: repeat(auto-fill, minmax(210px, 210px));
     justify-content: center;
+
+    @media(max-width: 460px){
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .animal-card {
@@ -160,6 +165,27 @@ body {
     &:hover{
         box-shadow: 0 0 10px 7px lightgray, inset 0 0 5px black;
     }
+
+    @media(max-width: 460px){
+        // width: 350px;
+        grid-template-columns: 3fr 1fr;
+        grid-template-rows: 3fr 2fr;
+
+        .information-wrapper{
+            grid-column-start: 1;
+        }
+
+        #remove-from-favorite-button{
+            grid-row-start: 1;
+            grid-column-start: 2;
+        }
+
+        #remove-button{
+            grid-row-start: 2;
+            grid-column-start: 2;
+        }
+    }
+
 
     .image-wrapper {
         display: flex;
