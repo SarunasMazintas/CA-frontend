@@ -167,7 +167,7 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser, getAnimalsList, typ
                         <label htmlFor="type"> Type: </label>
                         <select name="type" id="type" ref={typeRef}>
                             {types && types.map(type =>
-                                <option value={type.name}>{type.name[0].toUpperCase() + type.name.slice(1)}</option>
+                                <option key={type._id} value={type.name}>{type.name[0].toUpperCase() + type.name.slice(1)}</option>
                             )}
                         </select>
                     </div>

@@ -1,9 +1,11 @@
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { MyBackendContext } from '../../App'
 
 export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUser, removeAnimal }) => {
 
-
+    const backendUrl = useContext(MyBackendContext);
     let currentAnimal;
     const buttonFavRef = useRef();
     const removeButton = useRef();
@@ -26,8 +28,8 @@ export const AnimalCard = ({ animal, animalId, animals, toggleFavorite, loggedUs
 
     const image = () => {
         console.log(currentAnimal);
-        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[0] : "http://localhost:8001/images/no-image.jpg";
-        if (currentAnimal.deleted) return "http://localhost:8001/images/deleted.jpg"
+        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[0] : backendUrl + "/images/no-image.jpg";
+        if (currentAnimal.deleted) return backendUrl + "/images/deleted.jpg"
     }
 
     async function toggleThisFavorite() {

@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-
+import { useContext } from 'react';
+import { MyBackendContext } from '../../App'
 
 export const AnimalGallery = ({ animal, photosArray }) => {
+
+    const backendUrl = useContext(MyBackendContext);
 
     const currentAnimal = animal ? animal : {
         images: photosArray
@@ -36,8 +39,8 @@ export const AnimalGallery = ({ animal, photosArray }) => {
 
     const image = () => {
         console.log(currentAnimal);
-        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[imageIndex] : "http://localhost:8001/images/no-image.jpg";
-        if (currentAnimal.deleted) return "http://localhost:8001/images/deleted.jpg"
+        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[imageIndex] : backendUrl + "images/no-image.jpg";
+        if (currentAnimal.deleted) return backendUrl + "/images/deleted.jpg"
     }
 
     useEffect(() => {

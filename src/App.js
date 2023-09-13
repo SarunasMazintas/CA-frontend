@@ -28,7 +28,8 @@ function App() {
 
 
 
-  const backendUrl = 'http://localhost:8001';
+  //const backendUrl = 'http://localhost:8001';
+  const backendUrl = 'http://192.168.0.103:8001';
   const [loggedUser, setLoggedUser] = useState();
   const [animals, setAnimals] = useState([]);
   const [types, setTypes] = useState([]);
