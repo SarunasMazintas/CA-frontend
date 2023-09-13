@@ -18,7 +18,7 @@ export const Animal = ({ animals, loggedUser, loginStorageUser, getAnimalsList }
     const nav = useNavigate();
 
     async function init() {
-        setAnimal(prev => {
+        animals.length && setAnimal(prev => {
             const thisAnimal = animals.find(animal => animal._id === id);
             document.title = 'Animal: ' + thisAnimal.name;
             return thisAnimal;
@@ -35,7 +35,7 @@ export const Animal = ({ animals, loggedUser, loginStorageUser, getAnimalsList }
             document.title = 'Animal: ' + thisAnimal.name;
             return thisAnimal;
         });
-        
+
     }
 
     function editAnimal() {
@@ -59,14 +59,25 @@ export const Animal = ({ animals, loggedUser, loginStorageUser, getAnimalsList }
                     <AnimalGallery animal={animal} />
                 </div>
                 <div className="information-wrapper">
-                    <div className="name">Name: {animal.name}</div>
-                    <div className="type">Type: {animal.type}</div>
-                    <div className="age">Age: {animal.age}</div>
+                    <div className="information-values">
+                        <div className="name">
+                            <span className='property-name'>Name: </span>
+                            <span className="value">{animal?.name}</span>
+                        </div>
+                        <div className="type">
+                            <span className='property-name'>Type: </span>
+                            <span className="value">{animal.type}</span>
+                        </div>
+                        <div className="age">
+                            <span className='property-name'>Age: </span>
+                            <span className="value">{animal.age}</span>
+                        </div>
+                    </div>
                     {loggedUser.isAdmin
                         ? <button className='edit-animal-button' onClick={editAnimal}>Edit animal information</button>
                         : <></>}
                 </div>
-                <div className="comments">
+                <div className="comments-component">
                     <div>Comments:</div>
                     <CommentsWrapper animal={animal} loggedUser={loggedUser} />
                 </div>

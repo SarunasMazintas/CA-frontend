@@ -91,7 +91,7 @@ export const AdministrationPage = ({ loggedUser, loginStorageUser, types, setTyp
             && <div className='types-list'>
               {
                 types.map(type =>
-                  <div className='type' key={type.id} onClick={() => removeType(type)}>
+                  <div className='type' key={type._id} onClick={() => removeType(type)}>
                     {type.name}
                   </div>
                 )

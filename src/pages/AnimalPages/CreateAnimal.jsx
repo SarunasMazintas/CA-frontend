@@ -14,6 +14,7 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser, getAnimalsList, typ
     const backendUrl = useContext(MyBackendContext);
     const [message, setMessage] = useState();
     const [animalPhotos, setAnimalPhotos] = useState(onEdit ? animalFromLS.images : []);
+    const [errors, setErrors] = useState([]);
 
     const nameRef = useRef();
     const ageRef = useRef();
@@ -23,7 +24,34 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser, getAnimalsList, typ
 
     const nav = useNavigate();
 
+    function isFormValid() {
+        let noErrors = true;
+        setErrors((e) => []);
+        nameRef.current.style.borderColor = null;
+        nameRef.current.style.backgroundColor = null;
+
+        ageRef.current.style.borderColor = null;
+        ageRef.current.style.backgroundColor = null;
+
+        if (nameRef.current.value.length < 1 || nameRef.current.value.length > 100) {
+            setErrors((currentValue) => [...currentValue, 'Animal name length must be in range of 1..100!'])
+            nameRef.current.style.borderColor = "red";
+            nameRef.current.style.backgroundColor = "rgb(231, 185, 185, 0.2)";
+            noErrors = false;
+        }
+
+        if (ageRef.current.value === '') {
+            setErrors((currentValue) => [...currentValue, 'Age must be specified'])
+            ageRef.current.style.borderColor = "red";
+            ageRef.current.style.backgroundColor = "rgb(231, 185, 185, 0.2)";
+            noErrors = false;
+        }
+
+        return noErrors;
+    }
+
     async function createAnimal() {
+        if (!isFormValid()) return;
         const animal = {
             name: nameRef.current.value,
             age: ageRef.current.value,
@@ -126,32 +154,35 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser, getAnimalsList, typ
     return (
         <div className='animal-creation'>
             <div className="information">
-                <div className="form-control">
-                    <label htmlFor="name"> Name: </label>
-                    <input type="text" id='name' ref={nameRef} />
-                </div>
-                <div className="form-control">
-                    <label htmlFor="age"> Age: </label>
-                    <input type="number" id='age' ref={ageRef} />
-                </div>
-                <div className="form-control">
-                    <label htmlFor="type"> Type: </label>
-                    <select name="type" id="type" ref={typeRef}>
-                        {types && types.map(type =>
-                            <option value={type.name}>{type.name[0].toUpperCase() + type.name.slice(1)}</option>
-                        )}
-                    </select>
+                <div className="initial-form-controls">
+                    <div className="form-control">
+                        <label htmlFor="name"> Name: </label>
+                        <input type="text" id='name' ref={nameRef} />
+                    </div>
+                    <div className="form-control">
+                        <label htmlFor="age"> Age: </label>
+                        <input type="number" id='age' ref={ageRef} />
+                    </div>
+                    <div className="form-control">
+                        <label htmlFor="type"> Type: </label>
+                        <select name="type" id="type" ref={typeRef}>
+                            {types && types.map(type =>
+                                <option value={type.name}>{type.name[0].toUpperCase() + type.name.slice(1)}</option>
+                            )}
+                        </select>
+                    </div>
+                    <div className="errors">
+                        {errors && errors.map((x, id) => <div key={id}>{x}</div>)}
+                    </div>
                 </div>
                 <div className="images">
-                    <br />
                     <form ref={formRef} onSubmit={addImageToArray}>
                         <div className="form-control">
                             <label htmlFor="image"> Image Url: </label>
                             <input type="text" id='image' ref={imageRef} />
                         </div>
-                        <input type="submit" value={"Add image"} />
+                        <input type="submit" id="submit" value={"Add image"} />
                     </form>
-                    <br />
                 </div>
                 <div className="new-photos">
                     {animalPhotos.length > 0 && animalPhotos.map((current, id) => {
@@ -161,7 +192,6 @@ export const CreateAnimal = ({ loggedUser, loginStorageUser, getAnimalsList, typ
                         </div>
                     })}
                 </div>
-                <br />
                 <button onClick={submit}>{onEdit ? 'Submit changes' : 'Add animal'}!</button>
                 {message && <div className="error-message">{message}</div>}
             </div>

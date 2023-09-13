@@ -5,7 +5,7 @@ import { MyBackendContext } from '../../App'
 
 export const RegisterPage = () => {
     const backendUrl = useContext(MyBackendContext);
-    const [errorMsg, setErrorMsg] = useState();
+    const [message, setMessage] = useState([]);
     const nav = useNavigate();
 
     const usernameRef = useRef();
@@ -21,12 +21,54 @@ export const RegisterPage = () => {
         return () => clearTimeout(timer);
     }
 
-    function submit() {
+    function isFormValid() {
+        let noErrors = true;
+        setMessage((e) => []);
+        usernameRef.current.style.borderColor = null;
+        usernameRef.current.style.backgroundColor = null;
+
+        passwordRef.current.style.borderColor = null;
+        passwordRef.current.style.backgroundColor = null;
+
+        passwordRef2.current.style.borderColor = null;
+        passwordRef2.current.style.backgroundColor = null;
+
+        nameRef.current.style.borderColor = null;
+        nameRef.current.style.backgroundColor = null;
+
+        if (usernameRef.current.value.length < 4 || usernameRef.current.value.length > 20) {
+            setMessage((currentValue) => [...currentValue, 'User name length must be 4..20!'])
+            usernameRef.current.style.borderColor = "red";
+            usernameRef.current.style.backgroundColor = "rgb(231, 185, 185, 0.2)";
+            noErrors = false;
+        }
+
+        if (nameRef.current.value.length < 1 || nameRef.current.value.length > 50) {
+            setMessage((currentValue) => [...currentValue, 'Name can not be empty and can not exceed the limit of 50 letters'])
+            nameRef.current.style.borderColor = "red";
+            nameRef.current.style.backgroundColor = "rgb(231, 185, 185, 0.2)";
+            noErrors = false;
+        }
+
+        if (passwordRef.current.value.length < 4 || passwordRef.current.value.length > 20 ) {
+            setMessage((currentValue) => [...currentValue, 'Password length must be in range of 4..20'])
+            passwordRef.current.style.borderColor = "red";
+            passwordRef.current.style.backgroundColor = "rgb(231, 185, 185, 0.2)";
+            noErrors = false;
+        }
+
         if (passwordRef.current.value !== passwordRef2.current.value) {
-            setErrorMsg('Passwords doesnt match. User will not be registered');
+            setMessage((currentValue) => [...currentValue, 'Passwords does not match']);
+            passwordRef2.current.style.borderColor = "red";
+            passwordRef2.current.style.backgroundColor = "rgb(231, 185, 185, 0.2)";
             return;
         }
-        setErrorMsg();
+        return noErrors;
+    }
+
+
+    function submit() {
+        if (!isFormValid()) return;
 
         const user = {
             username: usernameRef.current.value,
@@ -45,7 +87,8 @@ export const RegisterPage = () => {
         fetch(backendUrl + '/register', options)
             .then(res => res.json())
             .then(data => {
-                setErrorMsg(data.message);
+                if (data.message) setMessage((currentValue) => [...currentValue, data.message]);
+                if (data.error) setMessage((currentValue) => [...currentValue, 'Error: ' + data.error]);
                 if (data.user) {
                     redirectToLogin(3)
                 }
@@ -66,15 +109,15 @@ export const RegisterPage = () => {
 
             <div className="form-control">
                 <label htmlFor="password"> Password: </label>
-                <input type="text" id='password' ref={passwordRef} />
+                <input type="password" id='password' ref={passwordRef} />
             </div>
 
             <div className="form-control">
                 <label htmlFor="password2"> Repeat password: </label>
-                <input type="text" id='password2' ref={passwordRef2} />
+                <input type="password" id='password2' ref={passwordRef2} />
             </div>
 
-            {errorMsg && <div className="error-message">Klaida: {errorMsg}</div>}
+            {message && <div className="error-message">{message.map((x, id) => <div key={id}>{x}</div>)}</div>}
             <button onClick={submit}>Register!</button>
             <div className='no-account-message'>
                 <span>Already registered? </span>

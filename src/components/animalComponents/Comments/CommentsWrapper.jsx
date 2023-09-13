@@ -58,13 +58,14 @@ export const CommentsWrapper = ({ animal, loggedUser }) => {
       {!comments && <div className='no-comments'>
         Loading...
       </div>}
-      {comments && !comments.length && <div className='no-comments'>
+      {comments && !comments.length && <div  className='no-comments'>
         No comments yet.
         <div>
           Be the first!
         </div>
+        <img src="https://i.kym-cdn.com/photos/images/newsfeed/001/043/243/419.gif" alt="" />
       </div>}
-      <Comments comments={comments} loggedUser={loggedUser}/>
+      {comments && comments.length > 0 && <Comments comments={comments} loggedUser={loggedUser}/>}
       <div className="controls">
         <input type="text" ref={messageRef} onKeyDown={keyClicked} />
         <button onClick={send}>Send!</button>

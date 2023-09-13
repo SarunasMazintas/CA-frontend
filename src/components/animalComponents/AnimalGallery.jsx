@@ -67,9 +67,8 @@ export const AnimalGallery = ({ animal, photosArray }) => {
             </div>}
             <div className="small-pics">
                 {currentAnimal?.images && currentAnimal.images.map((current, id) =>
-                    <div className={`image-wrapper${id === imageIndex ? ' selected-icon' : ''}`}>
+                    <div key={id} className={`image-wrapper${id === imageIndex ? ' selected-icon' : ''}`}>
                         <img src={current}
-                            key={id}
                             alt={id}
                             onClick={() => { setImageIndex(id) }}></img>
                     </div>
