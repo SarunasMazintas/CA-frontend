@@ -11,7 +11,7 @@ import { Animal } from './pages/AnimalPages/Animal';
 import { AdministrationPage } from './pages/Administration/AdministrationPage';
 export const MyBackendContext = createContext()
 
-const localStorageExpirationMinutes = 1000 * 60 * 100;
+const localStorageExpirationMinutes = (1000 * 60) * 100;
 
 function getDateInHumanForm(timestamp) {
   const date2 = new Date(Number(timestamp));
@@ -29,7 +29,7 @@ function App() {
 
 
   //const backendUrl = 'http://localhost:8001';
-  const backendUrl = 'http://192.168.0.103:8001';
+  const backendUrl = 'http://smazintas.cloud:8001';
   const [loggedUser, setLoggedUser] = useState();
   const [animals, setAnimals] = useState([]);
   const [types, setTypes] = useState([]);

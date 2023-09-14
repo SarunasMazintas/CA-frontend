@@ -71,11 +71,11 @@ export const LoginPage = ({ setLoggedUser, loginStorageUser, validateStorageUser
             <div className="login-page">
                 <div className="form-control">
                     <label htmlFor="username"> Username: </label>
-                    <input type="text" id='username' defaultValue='sarunas' ref={usernameRef} />
+                    <input type="text" id='username'  ref={usernameRef} />
                 </div>
                 <div className="form-control">
                     <label htmlFor="password"> Password: </label>
-                    <input type="password" defaultValue='sarunas' id='password' ref={passwordRef} />
+                    <input type="password"  id='password' ref={passwordRef} />
                 </div>
                 <button onClick={loginRequest} ref={buttonRef}>Login</button>
                 {message && <div>Message: {message}</div>}
