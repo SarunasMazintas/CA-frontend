@@ -39,7 +39,7 @@ export const AnimalGallery = ({ animal, photosArray }) => {
 
     const image = () => {
         console.log(currentAnimal);
-        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[imageIndex] : backendUrl + "images/no-image.jpg";
+        if (currentAnimal && !currentAnimal.deleted) return (currentAnimal.images.length > 0 && currentAnimal?.images[0] !== '') ? currentAnimal.images[imageIndex] : backendUrl + "/images/no-image.jpg";
         if (currentAnimal.deleted) return backendUrl + "/images/deleted.jpg"
     }
 
